@@ -1,6 +1,7 @@
 <?php
 
 include "db.php";
+require "config.php";
 
 $conn = get_connection();
 $id = null;
@@ -20,10 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $address = trim($_POST['address']);
     $unit = $_POST['unit'];
     $due_date = $_POST['due_date'];
-
-    // Compute total
-    $php_per_unit = 3;
-    $total = $unit * $php_per_unit;
+    $total = $unit * $rate_per_unit;
 
     $query = "UPDATE bills SET name = ?, email = ?, meter_number = ?, address = ?, unit = ?, total = ?, due_date = ?
                 WHERE id = ?";
@@ -86,8 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 type="text"
                 name="address"
                 class="form-control w-100"
-                required
-                value="<?php echo $bill['address'] ?>"></textarea>
+                required><?php echo $bill['address'] ?></textarea>
         </div>
         <div class="mb-3">
             <label for="unit" class="form-label fw-bold">Units Consumed:
@@ -98,6 +95,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 class="form-control w-100"
                 required
                 value="<?php echo $bill['unit']; ?>" />
+        </div>
+        <div class="mb-3">
+            <label for="due_date" class="form-label fw-bold">Due Date: </label>
+            <input type="date" name="due_date" class="form-control w-100" required
+                value="<?php echo $bill['due_date'] ?>" />
         </div>
         <div class="d-flex flex-column align-items-center gap-3">
             <button type="submit" class="btn btn-success">Update</button>
