@@ -39,7 +39,7 @@ if (isset($_GET['id'])) {
                 <p><strong>Name:</strong> <?php echo $bill['name']; ?></p>
                 <p><strong>Meter Number:</strong> <?php echo $bill['meter_number']; ?></p>
                 <p><strong>Email:</strong> <?php echo $bill['email']; ?></p>
-                <p><strong>Address:</strong> <?php echo $bill['address']; ?></p><br>
+                <p><strong>Address:</strong> <?php echo $bill['address']; ?></p>
             </div>
             <hr>
             <div class="mb-3">
