@@ -8,23 +8,27 @@ $id = null;
 if (isset($_GET['id'])) {
     $id = trim($_GET['id']);
 
-    $query = "SELECT * FROM customers WHERE id = {$id}";
+    $query = "SELECT * FROM bills WHERE id = {$id}";
     $result = $conn->query($query);
-    $customer = $result->fetch_assoc();
+    $bill = $result->fetch_assoc();
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $_POST["name"];
-    $email = trim($_POST["email"]);
-    $unit = $_POST["unit"];
+    $name = $_POST['name'];
+    $email = trim($_POST['email']);
+    $meter_number = $_POST['meter-number'];
+    $address = trim($_POST['address']);
+    $unit = $_POST['unit'];
+    $due_date = $_POST['due_date'];
 
     // Compute total
     $php_per_unit = 3;
     $total = $unit * $php_per_unit;
 
-    $query = "UPDATE customers SET name = ?, email = ?, unit = ?, total = ? WHERE id = ?";
+    $query = "UPDATE bills SET name = ?, email = ?, meter_number = ?, address = ?, unit = ?, total = ?, due_date = ?
+                WHERE id = ?";
     $sql = $conn->prepare($query);
-    $sql->bind_param("ssidi", $name, $email, $unit, $total, $id);
+    $sql->bind_param("ssisidsi", $name, $email, $meter_number, $address, $unit, $total, $due_date, $id);
 
     try {
         if ($sql->execute()) {
@@ -57,14 +61,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body class="container mt-5">
     <h2 class="text-center">Electricity Bill Update Form</h2>
-    <form action="update_bill.php?id=<?php echo $customer['id']; ?>" method="POST">
+    <form action="update_bill.php?id=<?php echo $bill['id']; ?>" method="POST">
         <div class="mb-3">
             <label for="name" class="form-label fw-bold">Name: </label>
-            <input type="text" name="name" class="form-control w-100" required value="<?php echo $customer["name"]; ?>" />
+            <input type="text" name="name" class="form-control w-100" required value="<?php echo $bill["name"]; ?>" />
         </div>
         <div class="mb-3">
             <label for="email" class="form-label fw-bold">Email: </label>
-            <input type="email" name="email" class="form-control w-100" required value="<?php echo $customer["email"]; ?>" />
+            <input type="email" name="email" class="form-control w-100" required value="<?php echo $bill["email"]; ?>" />
+        </div>
+        <div class="mb-3">
+            <label for="meter-number" class="form-label fw-bold">Meter Number:
+            </label>
+            <input
+                type="number"
+                name="meter-number"
+                class="form-control w-100"
+                required
+                value="<?php echo $bill['meter_number']; ?>" />
+        </div>
+        <div class="mb-3">
+            <label for="address" class="form-label fw-bold">Address: </label>
+            <textarea
+                type="text"
+                name="address"
+                class="form-control w-100"
+                required
+                value="<?php echo $bill['address'] ?>"></textarea>
         </div>
         <div class="mb-3">
             <label for="unit" class="form-label fw-bold">Units Consumed:
@@ -74,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 name="unit"
                 class="form-control w-100"
                 required
-                value="<?php echo $customer['unit']; ?>" />
+                value="<?php echo $bill['unit']; ?>" />
         </div>
         <div class="d-flex flex-column align-items-center gap-3">
             <button type="submit" class="btn btn-success">Update</button>
