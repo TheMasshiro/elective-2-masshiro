@@ -1,6 +1,7 @@
 <?php
 
 include "db.php";
+require "config.php";
 
 $conn = get_connection();
 
@@ -12,10 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $address = trim($_POST['address']);
     $unit = $_POST['unit'];
     $due_date = $_POST['due_date'];
-
-    // Compute total
-    $php_per_unit = 3;
-    $total = $unit * $php_per_unit;
+    $total = $unit * $rate_per_unit;
 
     $query = "INSERT INTO bills (name, email, meter_number, address, unit, total, due_date)
     VALUES (?, ?, ?, ?, ?, ?, ?)";
