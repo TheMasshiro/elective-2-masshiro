@@ -32,7 +32,7 @@ $result = $conn->query($query);
 
     if ($result->num_rows > 0) {
         echo   "<div class='table-responsive'>
-        <table class='table table-striped table-bordered align-middle'>
+        <table class='table table-bordered align-middle table-hover'>
             <thead>
                 <tr>
                     <th>ID</th>
@@ -45,7 +45,7 @@ $result = $conn->query($query);
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>";
+            <tbody class='table-group-divider'>";
         while ($row = $result->fetch_assoc()) {
             echo "<tr>
                     <td>{$row['id']}</td>
@@ -59,7 +59,7 @@ $result = $conn->query($query);
                         <a href='update_bill.php?id={$row['id']}' class='btn btn-warning btn-sm'>Edit</a>
                         <a href='delete_bill.php?id={$row['id']}' class='btn btn-danger btn-sm'
                             onclick=\"return confirm('Are you sure you want to delete Meter No. {$row['meter_number']}?')\">Delete</a>
-                        <a href='print.php?id={$row[' id']}' class='btn btn-secondary btn-sm'>Print</a>
+                        <a href='print.php?id={$row['id']}' class='btn btn-secondary btn-sm'>Print</a>
                     </td>
                 </tr>";
         }
