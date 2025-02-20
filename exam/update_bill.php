@@ -34,7 +34,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
     } catch (mysqli_sql_exception $e) {
-        echo "Error Caused: {$sql->error}";
+        echo "<div class='toast-container position-fixed top-0 end-0 p-3'>
+                <div id='errorToast' class='toast' role='alert' aria-live='assertive' aria-atomic='true' data-bs-autohide='true' data-bs-delay='5000'>
+                    <div class='toast-header'>
+                        <strong class='me-auto text-danger'>Update Error</strong>
+                        <button type='button' class='btn-close' data-bs-dismiss='toast' aria-label='Close'></button>
+                    </div>
+                    <div class='toast-body'>
+                        Error: {$sql->error}
+                    </div>
+                </div>
+            </div>";
     }
 
     $sql->close();
@@ -110,6 +120,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const errorToast = document.getElementById('errorToast');
+            if (errorToast) {
+                const toastBootstrap = bootstrap.Toast.getOrCreateInstance(errorToast);
+                toastBootstrap.show();
+            }
+        });
+    </script>
 </body>
 
 </html>
