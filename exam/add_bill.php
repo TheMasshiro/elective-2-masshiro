@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $php_per_unit = 3;
     $total = $unit * $php_per_unit;
 
-    $query = "INSERT INTO customers (name, email, meter_number, address, unit, total, due_date)
+    $query = "INSERT INTO bills (name, email, meter_number, address, unit, total, due_date)
     VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     $sql = $conn->prepare($query);
